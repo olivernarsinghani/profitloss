@@ -15,9 +15,16 @@ class DashboardController extends Controller
         // read the CSV file
         $fileD = fopen(storage_path('app/public/sample_data.csv'),"r");
         $column=fgetcsv($fileD);
+        $isValid = 1;
         while(!feof($fileD)){
-         $rowData[]=fgetcsv($fileD);
+            $rowData=fgetcsv($fileD);
+            if(strlen($rowData[0]) > 6){
+                return redirect()->back()->with('error', 'Please check the Month and year format.');   
+            }else{
+                $csvData[] = $rowData;
+            }
         }
+      
 
         //add the file log in database
         $csvRead = new CsvRead;
@@ -29,7 +36,7 @@ class DashboardController extends Controller
             
         // sorting the data with month and year wise
             usort(
-                $rowData, 
+                $csvData, 
                 function ($a, $b) {
                 return 
                     DateTime::createFromFormat('d-M-Y', "01-".$a["0"]) <=>
@@ -42,7 +49,7 @@ class DashboardController extends Controller
             $buyArray = array();
             $finalArray = array();
             $month = "";
-            foreach($rowData as $rowDataRow){
+            foreach($csvData as $rowDataRow){
                 if(!empty($rowDataRow)){
                     if($month!=""){
                         $month = $rowDataRow[0];
@@ -57,4 +64,10 @@ class DashboardController extends Controller
         return view('welcome',compact('finalArray'));
         }
     }
+    
+    public function showProfitLossScript()
+    {
+        return view('start_script');
+    }
+
 }
