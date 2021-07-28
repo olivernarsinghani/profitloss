@@ -45,7 +45,7 @@ tr:nth-child(even) {
 <tbody>
     @if(!empty($finalArray))
         @foreach($finalArray as $key=>$finalArrayRow)
-     
+        @if(isset($finalArrayRow[0]) && isset($finalArrayRow[1]))
             <tr>
                 <td>{{ $key }}</td>
                 @if($finalArrayRow[0][4]==1)
@@ -82,6 +82,7 @@ tr:nth-child(even) {
                    
                 @endif
             </tr>
+            @endif
         @endforeach
     @endif
 </tbody>

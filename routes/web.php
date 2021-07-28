@@ -18,6 +18,6 @@ use App\Http\Controllers\DashboardController;
 
 
 
-Route::get('/',[DashboardController::class,'index']);
-
+Route::get('/show-profitloss',[DashboardController::class,'index'])->name('show-profitloss');
+Route::get('/',[DashboardController::class,'showProfitLossScript']);
 
